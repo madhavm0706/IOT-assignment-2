@@ -1,6 +1,18 @@
 import paho.mqtt.client as mqtt
 import time
 
+import Adafruit_DHT  
+DHT11=Adafruit_DHT.DHT11  # Adafruit_DHT.DHT22 for DHT22 sensor.
+
+temp=0
+humid=0
+while True:
+
+    temp,humid=Adafruit_DHT.read_retry(DHT11,4) # 4 is ithe GPIO number you can change this to your required need  
+    if(temp):
+        break 
+ 
+
 i=1
 def senddata(a):
     global i
@@ -33,8 +45,8 @@ client.connect("localhost",1883,60)
 
 # a= ["50.2 88.4","51.2 83.4","60.2 78.4","55.2 68.4","10.2 18.4"]
 
-client.publish('raspberry/value', payload=i, qos=0, retain=False)
-print(f"send data {i} to Subscriber via topic raspberry/value")
+client.publish('raspberry/value', payload=temp, qos=0, retain=False)
+print(f"send data {temp} to Subscriber via topic raspberry/value")
 i = i+1
 
 # for i in range(5):
